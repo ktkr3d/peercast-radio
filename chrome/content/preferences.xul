@@ -1,0 +1,290 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+		
+<prefwindow id="peercastRadioPreferences"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+        title="Peercast Radio の設定"
+        onload="peercastRadioPrefs.init()">
+
+	<script type="application/x-javascript" 
+		src="chrome://peercast-radio/content/preferences.js"/>
+
+    <prefpane id="peercast-radio-pane-general" label="全般">
+        <preferences>
+            <preference id="extensions.peercast-radio.option-general-open-yellowpages-onload"
+                  name="extensions.peercast-radio.option-general-open-yellowpages-onload" type="bool" />
+            <preference id="extensions.peercast-radio.option-general-open-channelpanel-onload"
+                  name="extensions.peercast-radio.option-general-open-channelpanel-onload" type="bool" />
+            <preference id="extensions.peercast-radio.option-general-kick-peercast-onload"
+                  name="extensions.peercast-radio.option-general-kick-peercast-onload" type="bool" />
+            <preference id="extensions.peercast-radio.option-general-kick-peercast-path"
+                  name="extensions.peercast-radio.option-general-kick-peercast-path" type="string" />
+            <preference id="extensions.peercast-radio.option-general-auto-reload"
+                  name="extensions.peercast-radio.option-general-auto-reload" type="bool" />
+            <preference id="extensions.peercast-radio.option-general-auto-reload-interval"
+                  name="extensions.peercast-radio.option-general-auto-reload-interval" type="int" />
+            <preference id="extensions.peercast-radio.option-general-auto-reload-notify"
+                  name="extensions.peercast-radio.option-general-auto-reload-notify" type="bool" />
+        </preferences>
+		<checkbox preference="extensions.peercast-radio.option-general-open-yellowpages-onload"
+					label="起動時にチャンネル一覧を取得する" value="checked" oncommand=""/>
+		<checkbox preference="extensions.peercast-radio.option-general-open-channelpanel-onload"
+					label="起動時にチャンネル情報パネルを表示する" value="checked" oncommand="" />
+		<groupbox>
+			<caption label="Peercast の起動"/>
+			<vbox>
+				<checkbox preference="extensions.peercast-radio.option-general-kick-peercast-onload"
+							label="起動時に Peercast を起動する" value=""/>
+				<grid flex="1">
+					<columns>
+						<column/>
+						<column flex="1"/>
+					</columns>
+					<rows>
+						<row align="center">
+							<label>Peercast の場所: </label>
+							<textbox preference="extensions.peercast-radio.option-general-kick-peercast-path" value=""
+										clickSelectsAll="true" flex="1"/>
+						</row>
+					</rows>
+				</grid>
+			</vbox>
+		</groupbox>
+		<groupbox>
+			<caption label="チャンネル情報の更新"/>
+			<vbox>
+				<checkbox preference="extensions.peercast-radio.option-general-auto-reload"
+							label="チャンネルの自動更新を有効にする" value=""/>
+				<grid>
+					<columns>
+						<column/>
+						<column/>
+					</columns>
+					<rows>
+						<row align="center">
+							<label>自動更新間隔(分): </label>
+							<textbox preference="extensions.peercast-radio.option-general-auto-reload-interval"
+										value="" type="number" min="1" clickSelectsAll="true" size="5"/>
+						</row>
+					</rows>
+				</grid>
+				<checkbox preference="extensions.peercast-radio.option-general-auto-reload-notify"
+							label="自動更新時にお気に入りのチャンネルの配信開始を通知する" value=""/>
+			</vbox>
+		</groupbox>
+	</prefpane>
+
+	<prefpane id="peercast-radio-pane-network" label="ネットワーク">
+		<preferences>
+            <preference id="extensions.peercast-radio.option-network-peercast-host"
+                  name="extensions.peercast-radio.option-network-peercast-host" type="string"/>
+            <preference id="extensions.peercast-radio.option-network-peercast-port"
+                  name="extensions.peercast-radio.option-network-peercast-port" type="int"/>
+		</preferences>
+		<groupbox>
+			<caption label="Peercast サーバの設定"/>
+			<grid>
+				<columns>
+					<column/>
+					<column/>
+				</columns>
+				<rows>
+					<row align="center">
+						<label>ホスト: </label>
+						<textbox preference="extensions.peercast-radio.option-network-peercast-host"
+									value="localhost" clickSelectsAll="true"/>
+					</row>
+					<row align="center">
+						<label>ポート: </label>
+						<textbox preference="extensions.peercast-radio.option-network-peercast-port"
+									value="7144" type="number" clickSelectsAll="true" size="5"/>
+					</row>
+				</rows>
+			</grid>
+		</groupbox>
+	</prefpane>
+
+	<prefpane id="peercast-radio-pane-yellowpages" label="イエローページ">
+		<groupbox>
+			<caption label="イエローページの管理"/>
+			<grid flex="1">
+				<columns>
+					<column/>
+					<column flex="1"/>
+				</columns>
+				<rows>
+					<row align="center">
+						<label>イエローページ名: </label>
+						<menulist id="peercast-radio-prefspane-yellowpages-name-menulist"
+									label="" editable="true" flex="1"
+									oncommand="peercastRadioPrefs.onSelectYellowpagesName()">
+							<menupopup id="peercast-radio-prefspane-yellowpages-name-menupopup"/>
+						</menulist>
+					</row>
+					<row align="center">
+						<label>URL: </label>
+						<textbox id="peercast-radio-prefspane-yellowpages-url" value="" flex="1" />
+					</row>
+				</rows>
+			</grid>
+			<hbox>
+				<checkbox id="peercast-radio-prefspane-yellowpages-active"
+							label="このイエローページを有効にする" value="" flex="1"/>
+			</hbox>
+			<hbox class="optioncommand">
+				<spacer flex="1" />
+				<button label="追加" oncommand="peercastRadioPrefs.addYellowpage()" style="min-width: 4em;"/>
+				<button label="更新" oncommand="peercastRadioPrefs.updateYellowpage()" style="min-width: 4em;"/>
+				<button label="削除" oncommand="peercastRadioPrefs.deleteYellowpage()" style="min-width: 4em;"/>
+				<spacer flex="1" />
+			</hbox>
+		</groupbox>
+	</prefpane>
+
+	<prefpane id="peercast-radio-pane-filter" label="フィルタ">
+		<groupbox>
+			<caption label="フィルタの管理"/>
+			<grid flex="1">
+				<columns>
+					<column/>
+					<column flex="1"/>
+				</columns>
+				<rows>
+					<row align="center">
+						<label>フィルタ名: </label>
+						<menulist id="peercast-radio-prefspane-filter-name-menulist"
+									label="" editable="true" flex="1"
+									oncommand="peercastRadioPrefs.onSelectFilterName()">
+							<menupopup id="peercast-radio-prefspane-filter-name-menupopup"/>
+						</menulist>
+					</row>
+					<row align="center">
+						<label>対象: </label>
+						<menulist id="peercast-radio-prefspane-filter-target-menulist"
+									label="" flex="1"
+									oncommand="peercastRadioPrefs.onSelectTargetName()">
+							<menupopup id="peercast-radio-prefspane-filter-target-menupopup">
+								<menuitem label="チャンネル名" target="channel" category="string"/>
+								<menuitem label="概要" target="comment" category="string"/>
+								<menuitem label="視聴者数" target="listener" category="number"/>
+								<menuitem label="配信時間(分)" target="time" category="number"/>
+								<menuitem label="ビットレート(kbps)" target="bitrate" category="number"/>
+								<menuitem label="フォーマット" target="mediatype" category="string"/>
+							</menupopup>
+						</menulist>
+					</row>
+					<row align="center">
+						<label>条件: </label>
+						<menulist id="peercast-radio-prefspane-filter-condition-menulist"
+									label="" flex="1"
+									oncommand="peercastRadioPrefs.onSelectConditionName()">
+							<menupopup id="peercast-radio-prefspane-filter-condition-menupopup">
+								<menuitem label="が次と等しい" condition="eq" category="string"/>
+								<menuitem label="が次を含む" condition="in" category="string"/>
+								<menuitem label="が次に含まれる" condition="ex" category="string"/>
+								<menuitem label="が次の値と等しい" condition="eq" category="number"/>
+								<menuitem label="が次の値以上" condition="gt" category="number"/>
+								<menuitem label="が次の値以下" condition="lt" category="number"/>
+							</menupopup>
+						</menulist>
+					</row>
+					<row align="center">
+						<label>値: </label>
+						<vbox>
+							<textbox id="peercast-radio-prefspane-filter-strvalue" value="" flex="1"
+										tooltiptext="「が次に含まれる」の場合は「AAA|BBB|CCV」のように「|」(半角)で区切ってください"/>
+							<textbox id="peercast-radio-prefspane-filter-numvalue" value="" flex="1"
+										hidden="true" type="number" min="-9"/>
+						</vbox>
+					</row>
+				</rows>
+			</grid>
+			<hbox>
+				<checkbox id="peercast-radio-prefspane-filter-active"
+							label="このフィルタを有効にする" value="" flex="1"/>
+			</hbox>
+			<hbox class="optioncommand">
+				<spacer flex="1" />
+				<button label="追加" oncommand="peercastRadioPrefs.addFilter();" style="min-width: 4em;"/>
+				<button label="更新" oncommand="peercastRadioPrefs.updateFilter();" style="min-width: 4em;"/>
+				<button label="削除" oncommand="peercastRadioPrefs.deleteFilter();" style="min-width: 4em;"/>
+				<spacer flex="1" />
+			</hbox>
+		</groupbox>
+	</prefpane>
+	
+	<prefpane id="peercast-radio-pane-player" label="外部プレイヤー">
+		<preferences>
+            <preference id="extensions.peercast-radio.option-player-mms-player"
+                  name="extensions.peercast-radio.option-player-mms-player" type="string"/>
+            <preference id="extensions.peercast-radio.option-player-mms-option"
+                  name="extensions.peercast-radio.option-player-mms-option" type="string"/>
+            <preference id="extensions.peercast-radio.option-player-mms-mediatype"
+                  name="extensions.peercast-radio.option-player-mms-mediatype" type="string"/>
+            <preference id="extensions.peercast-radio.option-player-mms-use-mmsh"
+                  name="extensions.peercast-radio.option-player-mms-use-mmsh" type="bool"/>
+            <preference id="extensions.peercast-radio.option-player-http-player"
+                  name="extensions.peercast-radio.option-player-http-player" type="string"/>
+            <preference id="extensions.peercast-radio.option-player-http-option"
+                  name="extensions.peercast-radio.option-player-http-option" type="string"/>
+            <preference id="extensions.peercast-radio.option-player-http-mediatype"
+                  name="extensions.peercast-radio.option-player-http-mediatype" type="string"/>
+		</preferences>
+		<groupbox>
+			<caption label="外部プレイヤー1 (MMS ストリーム)"/>
+			<grid flex="1">
+				<columns>
+					<column/>
+					<column flex="1"/>
+				</columns>
+				<rows>
+					<row align="center">
+						<label>場所: </label>
+						<textbox preference="extensions.peercast-radio.option-player-mms-player"
+									value="" tooltiptext="絶対パスで指定します" flex="1"/>
+					</row>
+					<row align="center">
+						<label>オプション: </label>
+						<textbox preference="extensions.peercast-radio.option-player-mms-option"
+									value="" tooltiptext="必要に応じてプレイヤーに渡す追加オプションを指定します" flex="1"/>
+					</row>
+					<row align="center">
+						<label>形式: </label>
+						<textbox preference="extensions.peercast-radio.option-player-mms-mediatype"
+									value="" tooltiptext="視聴対象の形式を指定します"/>
+					</row>
+				</rows>
+			</grid>
+			<hbox>
+				<checkbox preference="extensions.peercast-radio.option-player-mms-use-mmsh"
+							label="mms: の代わりにmmsh: を使用する" value="" oncommand="" />
+			</hbox>
+		</groupbox>
+		<groupbox>
+			<caption label="外部プレイヤー2 (HTTP ストリーム)"/>
+			<grid flex="1">
+				<columns>
+					<column/>
+					<column flex="1"/>
+				</columns>
+				<rows>
+					<row align="center">
+						<label>場所: </label>
+						<textbox preference="extensions.peercast-radio.option-player-http-player"
+									value="" tooltiptext="絶対パスで指定します" flex="1"/>
+					</row>
+					<row align="center">
+						<label>オプション: </label>
+						<textbox preference="extensions.peercast-radio.option-player-http-option"
+									value="" tooltiptext="必要に応じてプレイヤーに渡す追加オプションを指定します" flex="1"/>
+					</row>
+					<row align="center">
+						<label>形式: </label>
+						<textbox preference="extensions.peercast-radio.option-player-http-mediatype"
+									value="" tooltiptext="視聴対象の形式を指定します"/>
+					</row>
+				</rows>
+			</grid>
+		</groupbox>
+	</prefpane>
+</prefwindow>

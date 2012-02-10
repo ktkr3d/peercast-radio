@@ -1,0 +1,262 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin" type="text/css"?>
+<?xml-stylesheet href="chrome://peercast-radio/skin/peercastradio.css"
+		type="text/css"?>
+
+<window
+	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+	xmlns:html="http://www.w3.org/1999/xhtml"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+	title="Peercast Radio"
+	id="peercastRadioSideBar"
+	onload="peercastRadio.init()">
+
+<script type="application/x-javascript" 
+		src="chrome://peercast-radio/content/peercastradio.js"/>
+
+<menupopup id="peercast-radio-context-menupopup">
+	<menuitem label="視聴"
+				oncommand="peercastRadio.playStreamURL()"
+				class="menuitem-iconic"
+				image="chrome://peercast-radio/skin/nav-button-play.png"/>
+	<menuitem label="掲示板"
+				oncommand="peercastRadio.openContactURL()"
+				class="menuitem-iconic"
+				image="chrome://peercast-radio/skin/nav-button-chat.png"/>
+	<menuseparator/>
+	<menuitem label="お気に入りに追加"
+				oncommand="peercastRadio.addFavorite()"
+				class="menuitem-iconic"
+				image="chrome://peercast-radio/skin/nav-button-heart.png"/>
+	<menuitem label="お気に入りから削除"
+				oncommand="peercastRadio.deleteFavorite()"
+				class="menuitem-iconic"
+				image="chrome://peercast-radio/skin/broken-heart.png"/>
+	<menuseparator/>
+	<menuitem label="チャンネル名をWeb検索"
+				oncommand="peercastRadio.searchChannelName()"
+				class="menuitem-iconic"
+				image="chrome://peercast-radio/skin/search.png"/>
+</menupopup>
+
+<vbox flex="0">
+	<hbox id="peercast-radio.option_head" class="option_head">
+		<textbox id="filter" value="" emptytext="検索" flex="1" type="search" 
+				oncommand="peercastRadio.inputFilter(event)" />
+		<toolbox id="non-functioning-toolbox" flex="0">
+			<toolbar id="working-toolbar" >
+				<toolbarbutton
+						id="peercast-radio-toolbar-play"
+						image="chrome://peercast-radio/skin/nav-button-play-disable.png"
+						oncommand="peercastRadio.playStreamURL();"
+						disabled="true" 
+						tooltiptext="視聴">
+				</toolbarbutton>
+				<toolbarbutton 
+						id="peercast-radio-toolbar-chat"
+						image="chrome://peercast-radio/skin/nav-button-chat-disable.png"
+						oncommand="peercastRadio.openContactURL();" 
+						disabled="true"
+						tooltiptext="掲示板">
+				</toolbarbutton>
+				<toolbarbutton 
+						id="peercast-radio-toolbar-reload-toolbar"
+						type="menu-button"
+						image="chrome://peercast-radio/skin/nav-button-reload.png"
+						oncommand="peercastRadio.loadYellowPages(event.target)" 
+						tooltiptext="チャンネル読込">
+					<menupopup id="peercast-radio-toolbar-yellow-pages-menupopup"
+						tooltiptext="有効にするイエローページを選択"/>
+				</toolbarbutton>
+				<toolbarbutton
+						id="peercast-radio-toolbar-filter-toolbar"
+						type="menu-button"
+						image="chrome://peercast-radio/skin/nav-button-filter.png"
+						oncommand="peercastRadio.loadFilter(event.target)"
+						tooltiptext="フィルタ">
+					<menupopup id="peercast-radio-toolbar-filter-menupopup"
+						tooltiptext="有効にするフィルタを選択"/>
+				</toolbarbutton>
+				<toolbarbutton 
+						image="chrome://peercast-radio/skin/nav-button-home.png"
+						oncommand="peercastRadio.openHomeURL();" 
+						tooltiptext="Peercast 設定">
+				</toolbarbutton>
+				<toolbarbutton
+						type="menu"
+						image="chrome://peercast-radio/skin/nav-button-optin.png"
+						tooltiptext="環境設定">
+					<menupopup>
+						<menuitem label="全般設定..."
+							oncommand="peercastRadio.openPrefWindow('peercast-radio-pane-general')"/>
+						<menuitem label="ネットワーク設定..."
+							oncommand="peercastRadio.openPrefWindow('peercast-radio-pane-network')"/>
+						<menuitem label="イエローページ設定..."
+							oncommand="peercastRadio.openPrefWindow('peercast-radio-pane-yellowpages')"/>
+						<menuitem label="フィルタ設定..."
+							oncommand="peercastRadio.openPrefWindow('peercast-radio-pane-filter')"/>
+						<menuitem label="外部プレイヤー設定..."
+							oncommand="peercastRadio.openPrefWindow('peercast-radio-pane-player')"/>
+						<menuseparator/>
+						<menuitem label="チャンネル情報"
+							id="peercast-radio-toolbar-channel-information"
+							type="checkbox"
+							oncommand="peercastRadio.openChannelInformation();"/>
+						<menuseparator/>
+						<menuitem label="Peercast Radio について"
+							oncommand="peercastRadio.openAbout();"/>
+					</menupopup>
+				</toolbarbutton>
+			</toolbar>
+		</toolbox>
+	</hbox>
+</vbox>
+<vbox flex="1">
+	<hbox flex="1">
+			<tree id="peercast-radio-channel-tree"
+					flex="1"
+					hidecolumnpicker="false"
+					enableColumnDrag="true"
+					style="margin: 0px; overflow: hidden;"
+					seltype="single"
+					sortDirection="descending"
+					sortResource="listener"
+					persist="sortDirection sortResource"
+					onselect="peercastRadio.onItemSelected();"
+					ondblclick="peercastRadio.doDefaultAction(event.target);"
+					context="peercast-radio-context-menupopup">
+				<treecols pickertooltiptext="表示項目の選択">
+					<treecol id="channel"  flex="1" label="チャンネル名"
+							tooltiptext="チャンネル名" class="columnchannel"
+							persist="width ordinal hidden sortActive sortDirection"
+							onclick="sort(this)" sortDirection="natural"/>
+					<splitter class="tree-splitter" />
+					<treecol id="comment"   flex="1" label="概要"
+							tooltiptext="概要(ジャンル/概要/配信者から)" class="columncomment"
+							persist="width ordinal hidden sortActive sortDirection"
+							onclick="sort(this)" sortDirection="natural"/>
+					<splitter class="tree-splitter" />
+					<treecol id="listener" flex="1" label="#"
+							tooltiptext="視聴者数" class="columnlistener"
+							persist="width ordinal hidden sortActive sortDirection"
+							onclick="sort(this)" sortDirection="descending" sortActive="true"/>
+					<splitter class="tree-splitter" />
+					<treecol id="time"  flex="1" label="時間"
+							tooltiptext="配信経過時間" class="columntime"
+							persist="width ordinal hidden sortActive sortDirection"
+							onclick="sort(this)" sortDirection="natural"
+							hidden="true"/>
+					<splitter class="tree-splitter" />
+					<treecol id="bitrate"  flex="1" label="BR"
+							tooltiptext="ビットレート" class="columnbitrate"
+							persist="width ordinal hidden sortActive sortDirection"
+							onclick="sort(this)" sortDirection="descending"/>
+					<splitter class="tree-splitter" />
+					<treecol id="mediatype"  flex="1" label="形式"
+							tooltiptext="ストリーム形式" class="columnmediatype"
+							persist="width ordinal hidden sortActive sortDirection"
+							onclick="sort(this)" sortDirection="natural"
+							hidden="true"/>
+				</treecols>
+				<treechildren id="peercast-radio-channel-tree-children"
+							alternatingbackground="true"/>
+			</tree>
+	</hbox>
+</vbox>
+<notificationbox id="peercast-radio-notificationbox" flex="0"/>
+<vbox id="peercast-radio-channel-information-bar" hidden="true" class="peercast-radio-panel">
+	<hbox class="peercast-radio-panel-description">
+		<caption flex="1" class="peercast-radio-panel-description-caption" label="チャンネル情報"/>
+		<vbox>
+			<spacer flex="1" />
+			<image src="chrome://peercast-radio/skin/action_delete.png"
+					onclick="peercastRadio.cancelChannelInformation()"/>
+			<spacer flex="1" />
+		</vbox>
+	</hbox>
+	<vbox class="peercast-radio-panel-content">
+		<hbox style="padding: 0px 4px;">
+			<textbox id="peercast-radio-channel-information-channel"
+						class="plain" style="background-color: transparent;" flex="1"
+						multiline="true" rows="1" readonly="true"
+						onoverflow="this.height = this.inputField.scrollHeight;"
+						DOMAttrModified="if(event.attrName == 'value') this.value = event.newValue; return true;"
+						value="" tooltiptext="チャンネル名"/>
+			<vbox>
+				<hbox>
+					<image id="peercast-radio-channel-information-play"
+							src="chrome://peercast-radio/skin/nav-button-play.png"
+							hidden="true"
+							class="peercast-radio-channel-information-icon"
+							tooltiptext="視聴可"/>
+					<image id="peercast-radio-channel-information-chat"
+							src="chrome://peercast-radio/skin/nav-button-chat.png"
+							hidden="true"
+							class="peercast-radio-channel-information-icon"
+							tooltiptext="掲示板利用可"/>
+					<image id="peercast-radio-channel-information-heart"
+							src="chrome://peercast-radio/skin/nav-button-heart.png"
+							hidden="true"
+							class="peercast-radio-channel-information-icon"
+							tooltiptext="お気に入り登録済み"/>
+				</hbox>
+			</vbox>
+		</hbox>
+		<hbox style="padding: 0px 4px;">
+			<textbox id="peercast-radio-channel-information-comment"
+						class="plain" style="background-color: transparent;" flex="1"
+						multiline="true" readonly="true"
+						onoverflow="this.height = this.inputField.scrollHeight;"
+						DOMAttrModified="if(event.attrName == 'value') this.value = event.newValue; return true;"
+						value="" tooltiptext="ジャンル、概要、配信者から..."/>
+		</hbox>
+		<hbox class="peercast-radio-channel-information-detail">
+			<label tooltiptext="配信が開始されたおよその日時">
+				<image src="chrome://peercast-radio/skin/listen.png"
+						class="peercast-radio-channel-information-icon" flex="1"/>配信開始日時: </label>
+			<label id="peercast-radio-channel-information-startdate"
+					class="peercast-radio-channel-information-icon" flex="2"/>
+		</hbox>
+		<grid class="peercast-radio-channel-information-detail">
+			<columns>
+				<column flex="0"/>
+				<column flex="1"/>
+				<column flex="0"/>
+				<column flex="1"/>
+			</columns>
+			<rows>
+				<row align="center">
+					<label tooltiptext="視聴者数(-1: 視聴者数非公開, -9: 運用チャンネル)">
+						<image src="chrome://peercast-radio/skin/group.png"
+								class="peercast-radio-channel-information-icon"/>視聴者数:</label>
+					<label id="peercast-radio-channel-information-listener"/>
+					<label tooltiptext="配信時間(時間:分)">
+						<image src="chrome://peercast-radio/skin/time.png"
+								class="peercast-radio-channel-information-icon"/>配信時間: </label>
+					<label id="peercast-radio-channel-information-time"/>
+				</row>
+				<row align="center">
+					<label tooltiptext="配信ストリームの形式">
+						<image src="chrome://peercast-radio/skin/file.png"
+								class="peercast-radio-channel-information-icon"/>形式:</label>
+					<label id="peercast-radio-channel-information-mediatype"/>
+					<label tooltiptext="配信ストリームのビットレート(単位: kbps)">
+						<image src="chrome://peercast-radio/skin/photo.png"
+								class="peercast-radio-channel-information-icon"/>ビットレート:</label>
+					<label id="peercast-radio-channel-information-bitrate"/>
+				</row>
+				<row align="center">
+					<label tooltiptext="検索やフィルタの実行でヒットしたチャンネル数" flex="1">
+						<image src="chrome://peercast-radio/skin/search.png"
+								class="peercast-radio-channel-information-icon"/>ヒット数:</label>
+					<label id="peercast-radio-channel-information-filtered-channel" flex="1">0</label>
+					<label tooltiptext="イエローページから取得した全チャンネル数" flex="1">
+						<image src="chrome://peercast-radio/skin/base.png"
+								class="peercast-radio-channel-information-icon"/>チャンネル数:</label>
+					<label id="peercast-radio-channel-information-all-channel" flex="1">0</label>
+				</row>
+			</rows>
+		</grid>
+	</vbox>
+</vbox>
+</window>

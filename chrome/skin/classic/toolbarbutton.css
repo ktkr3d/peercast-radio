@@ -1,0 +1,31 @@
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+
+
+#peercast-radio-toolbarbutton {
+  list-style-image: url("chrome://peercast-radio/skin/toolbarbutton.png") !important;
+  -moz-image-region: rect(0px, 24px, 24px, 0px);
+}
+
+#peercast-radio-toolbarbutton:hover,
+#peercast-radio-toolbarbutton[buttonover="true"] {
+  -moz-image-region: rect(24px 24px 48px 0px);
+}
+
+#peercast-radio-toolbarbutton:hover:active {
+  -moz-image-region: rect(24px 24px 48px 0px);
+}
+
+
+toolbar[iconsize="small"] #peercast-radio-toolbarbutton {
+  list-style-image: url("chrome://peercast-radio/skin/toolbarbutton-small.png") !important;
+  -moz-image-region: rect(0px, 16px, 16px, 0px);
+}
+
+toolbar[iconsize="small"] #peercast-radio-toolbarbutton:hover,
+toolbar[iconsize="small"] #peercast-radio-toolbarbutton[buttonover="true"]{
+  -moz-image-region: rect(0px, 16px, 16px, 0px);
+}
+
+toolbar[iconsize="small"] #peercast-radio-toolbarbutton:hover:active {
+  -moz-image-region: rect(0px, 16px, 16px, 0px);
+}

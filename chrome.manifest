@@ -1,0 +1,9 @@
+content	peercast-radio					jar:chrome/peercast-radio.jar!/content/
+locale	peercast-radio	en-US			jar:chrome/peercast-radio.jar!/locale/en-US/
+locale	peercast-radio	ja-JP			jar:chrome/peercast-radio.jar!/locale/ja-JP/
+skin	peercast-radio	classic/1.0		jar:chrome/peercast-radio.jar!/skin/classic/
+
+overlay	chrome://browser/content/browser.xul	chrome://peercast-radio/content/overlay.xul
+
+style	chrome://browser/content/browser.xul			chrome://peercast-radio/skin/toolbarbutton.css
+style	chrome://global/content/customizeToolbar.xul	chrome://peercast-radio/skin/toolbarbutton.css
