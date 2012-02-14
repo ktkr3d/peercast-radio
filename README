@@ -1,1 +1,8 @@
-Directory of Peercast Internet radio streams
+Peercast Radio
+--------------
+    Directory of Peercast Internet radio streams addon for firefox.
+
+Build
+-----
+    $ ./build.sh
+
