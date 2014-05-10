@@ -21,6 +21,7 @@ var peercastRadio = {
 	
 	init : function() {
 		if (Application.prefs.getValue("extensions.peercast-radio.first-kick", false)) {
+			Application.prefs.setValue("extensions.peercast-radio.first-kick", false);
 			// platform detection
 			// Windows: "WINNT", Linux: "Linux", Mac "Darwin"
 			var osString = Components.classes["@mozilla.org/xre/app-info;1"]
@@ -54,7 +55,7 @@ var peercastRadio = {
 			
 			// open about page
 			this.openAbout();
-
+/*
 			// add peercast radio toolbutton?
 			var nb = gBrowser.getNotificationBox();
 			nb.appendNotification(
@@ -72,9 +73,7 @@ var peercastRadio = {
 					}
 				]
 			);
-			
-			Application.prefs.setValue("extensions.peercast-radio.first-kick", false);
-			
+*/			
 		}
 		// get installed version number
 		var strInstalledVersion = Application.prefs.getValue("extensions.peercast-radio.installed-version", "");
