@@ -1,8 +1,8 @@
-#Peercast Radio
+# PeerCast Radio
 
 Directory of Peercast Internet radio streams addon for firefox.
 
-##Build
+## How to build
 
 ``` bash
 $ ./build.sh

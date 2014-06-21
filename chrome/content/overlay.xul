@@ -24,4 +24,6 @@
 			oncommand="toggleSidebar('peercast-radio_side_bar');" />
 	</broadcasterset>
 
+	<script type="text/javascript; version=1.8" src="overlay.js" charset="utf-8" />
+
 </overlay>

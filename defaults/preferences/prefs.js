@@ -7,7 +7,7 @@ pref("nglayout.debug.disable_xul_fastload", true);
 
 /* application prefs*/
 pref("extensions.peercast-radio.first-kick", true);
-pref("extensions.peercast-radio.installed-version", "0.1.0a9");
+pref("extensions.peercast-radio.installed-version", "0.1.12");
 
 pref("extensions.peercast-radio.status-filter-on", false);
 

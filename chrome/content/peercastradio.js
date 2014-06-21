@@ -55,31 +55,13 @@ var peercastRadio = {
 			
 			// open about page
 			this.openAbout();
-/*
-			// add peercast radio toolbutton?
-			var nb = gBrowser.getNotificationBox();
-			nb.appendNotification(
-				"You can add the \"Peercast Radio\" button on your toolbar now.",
-				"pcr-notification",
-				"chrome://peercast-radio/skin/toolbarbutton.gif",
-				nb.PRIORITY_INFO_MEDIUM,
-				[
-					{
-						label: "Add now",
-						accessKey: "",
-						callback: function() {
-							window.BrowserCustomizeToolbar();
-						}
-					}
-				]
-			);
-*/			
 		}
+
 		// get installed version number
 		var strInstalledVersion = Application.prefs.getValue("extensions.peercast-radio.installed-version", "");
 
 		// set current version number (to be modified...)
-		Application.prefs.setValue("extensions.peercast-radio.installed-version", "0.1.0a10");
+		Application.prefs.setValue("extensions.peercast-radio.installed-version", "0.1.12");
 
 		// setup toolber filter
 		document.getElementById("peercast-radio-toolbar-filter-toolbar").checked
@@ -97,7 +79,7 @@ var peercastRadio = {
 		}
 
 		// open channel information panel
-		if (Application.prefs.getValue("extensions.peercast-radio.option-general-open-channelpanel-onload", false)) {
+		if (Application.prefs.getValue("extensions.peercast-radio.option-general-open-channelpanel-onload", true)) {
 			this.openChannelInformation();
 		}
 

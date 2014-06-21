@@ -1,6 +1,6 @@
-Peercast Radio アドオン for Firefox のチェンジログとバックログ
+# Peercast Radio アドオン for Firefox のチェンジログとバックログ
 
-■済み(実装済み機能や対策済みの問題)
+## チェンジログ(実装済み機能や対策済みの問題)
 [Ver. 0.1.0a1] (2010/07/02)
     - チャンネル一覧
     - 外部プレイヤーの起動
@@ -33,8 +33,10 @@ Peercast Radio アドオン for Firefox のチェンジログとバックログ
     - リソースの修正
 [Ver. 0.1.11] (2014/05/10)
     - 初回起動時のツールバー登録処理削除
+[Ver. 0.1.12] (2014/06/21)
+    - 初回起動時のツールバー登録処理追加
 
-■未(未実装の機能や不具合)
+## バックログ(未実装の機能や不具合)
 - フィルタ毎に行の背景色を変える
 - 配信開始検知のよりよいロジック
 - タイムアウト処理
@@ -52,9 +54,10 @@ Peercast Radio アドオン for Firefox のチェンジログとバックログ
 - 初回インストール時にFirefox ツールバーにアドオンのアイコンを追加
 - 外部プレイヤーを複数登録
 - キーワード検索が失敗する場合がある
+- peercast 起動の設定は削除した方がよさそう
 
-■その他メモ
-- プラットフォーム/外部プレイヤーのPeercast ストリーム動作確認
+## その他メモ
+### プラットフォーム/外部プレイヤーのPeercast ストリーム動作確認
     - Windows (Vista Home SP2 32bit, peercast v0.1218(VP0026))
                     WMP     VLC     PCWMP
         -----------+-------+-------+-------+
@@ -70,7 +73,7 @@ Peercast Radio アドオン for Firefox のチェンジログとバックログ
         OGG         OK      OK      OK      OK*1
     *1) ウィンドウがでないので注意
     *2) vlc でWMV/WMA を視聴する場合はmmsh: にした方がよいかも?
-- Peercast Radio
+### Peercast Radio
     - フィルタの初期値
         name                target      cond    value       active
         -------------------+-----------+-------+-----------+-------+
@@ -82,7 +85,7 @@ Peercast Radio アドオン for Firefox のチェンジログとバックログ
         GAME                comment     in      "GAME"      false
         ラジオ              mediatype   ex      "OGG|MP3"   false
         YP 運用             listener    eq      -9          false
-- XUL について
+### XUL について
     - プラットフォームによる差異
         - groupbox の枠線の描画(Linux の場合、デフォルトで描画されない。
           border を指定すると描画されるが、caption 文字と重なる)
@@ -98,4 +101,3 @@ Peercast Radio アドオン for Firefox のチェンジログとバックログ
         tree.treeBoxObject.invalidateRow() で再描画要
     - Tree の選択行を取得するcurrentIndex は選択していなくても-1 以外が返る
         tree.view.selection.isSelected(idx) で再確認要
-
