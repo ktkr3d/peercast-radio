@@ -30,13 +30,13 @@ var peercastRadio = {
 			var strOptionPlayerMmsMediatype ="WMV,WMA";
 			var bOptionPlayerMmsUseMmsh = false;
 			var strOptionPlayerHttpPlayer = "";
-			var strOptionPlayerHttpMediatype = "OGG,MP3";
+			var strOptionPlayerHttpMediatype = "OGG,MP3,FLV";
 			
 			if (osString == "WINNT") {
 				strOptionPlayerMmsPlayer = "C:\\Program Files\\Windows Media Player\\wmplayer.exe";
 				strOptionPlayerMmsMediatype ="WMV,WMA,MP3";
 				strOptionPlayerHttpPlayer = "C:\\Program Files\\VideoLAN\\VLC\\vlc.exe";
-				strOptionPlayerHttpMediatype = "OGG";
+				strOptionPlayerHttpMediatype = "OGG,FLV";
 			} else if (osString == "Linux") {
 				strOptionPlayerMmsPlayer = "/usr/bin/vlc";
 				bOptionPlayerMmsUseMmsh = true;
